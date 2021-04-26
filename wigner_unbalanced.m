@@ -1,16 +1,16 @@
 %% audioread input
 
-[x_in, fs] = audioread('bird.wav');
-t_start = 2;
-t_end = 5;
-f_start = 200;
-f_end = 5000;
+%[x_in, fs] = audioread('bird.wav');
+t_start = -4;
+t_end = 4;
+f_start = -4;
+f_end = 4;
 dt = 1/50;
 dtau = 1/fs;
-df = 1/2;   % Hz
+df = 1/50;   % Hz
 S = dt/dtau;
-x = x_in(t_start*fs:t_end*fs,1).';
-x_star = conj(x);
+%x = x_in(t_start*fs:t_end*fs,1).';
+
 %% input
 
 n_tau = t_start/dtau:1:t_end/dtau;
@@ -23,15 +23,18 @@ N = 1/dt/df/2;
 T = length(n_t);
 F = length(m);
 
+x = cos(2 * pi * n_tau * dtau);
+x_star = conj(x);
+
 %% calculation
 
 Wx = zeros(F, T);
 
 for n0 = index_t
     c = zeros(1,N);
-    Q = min(n2-n0,n0-n1);
+    Q = min(n2-n0*S,n0*S-n1);
     for q = 0:2*Q
-        c(q+1) = x(n0*S+q-Q-n1*S+1) * x_star(n0*S-q+Q-n1*S+1);
+        c(q+1) = x(n0*S+q-Q-n1+1) * x_star(n0*S-q+Q-n1+1);
     end
     C = fft(c, N);
     Wx(:,n0-n1+1) = 2 * dt * exp(1i * 2 * pi * m * Q / N) .* C(round(mod(m,N))+1);
