@@ -1,5 +1,5 @@
 %% parameters
-phi = 0.5 * pi;
+phi = 0.01 * pi;
 N = 10000;
 u_start = -5;
 u_end = 5;
