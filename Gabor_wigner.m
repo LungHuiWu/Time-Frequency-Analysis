@@ -10,7 +10,7 @@ n = t_start/dt:1:t_end/dt;
 m = f_start/df:1:f_end/df;
 t = n * dt;
 f = m * df;
-x = exp(-pi * t.^2);
+x = cos(2 * pi * t);
 x_star = conj(x);
 sigma = 1;
 
@@ -51,13 +51,13 @@ end
 Wx = zeros(F, T);
 
 for n0 = n
-    c = zeros(1,N);
+    c = zeros(1,N_wigner);
     Q_wig = min(n2-n0,n0-n1);
     for q = 0:2*Q_wig
         c(q+1) = x(n0+q-Q_wig-n1+1) * x_star(n0-q+Q_wig-n1+1);
     end
-    C = fft(c, N);
-    Wx(:,n0-n1+1) = 2 * dt * exp(1i * 2 * pi * m * Q_wig / N) .* C(round(mod(m,N))+1);
+    C = fft(c, N_wigner);
+    Wx(:,n0-n1+1) = 2 * dt * exp(1i * 2 * pi * m * Q_wig / N_wigner) .* C(round(mod(m,N_wigner))+1);
 end
 
 %% multiplication
@@ -76,5 +76,5 @@ set(gca,'Ydir','normal')    % 若沒這一行, y-axis 的方向是倒過來的
 set(gca,'Fontsize',12)        % 改變橫縱軸數值的 font sizes 
 xlabel('Time (Sec)','Fontsize',12)             % x-axis
 ylabel('Frequency (Hz)','Fontsize',12)      % y-axis
-title('Gabor_Wigner of x(t)','Fontsize',12)              % title
+title('Gabor wigner of x(t)','Fontsize',12)              % title
 
