@@ -18,7 +18,7 @@ m = round(u/du);
 n = round(t/dt);
 
 %% input
-x = rectangularPulse(-2,2,t);
+x = cos(pi*t);
 %% plot
 figure
 hold on
@@ -74,3 +74,4 @@ plot(t,real(Y))
 plot(t,imag(Y))
 hold off
 xlim([-5,5])
+ylim([-1,1])
